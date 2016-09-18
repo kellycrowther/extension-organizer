@@ -1,0 +1,38 @@
+#!/bin/bash
+
+#a script for organizing files by extension. It will move files on the desktop to the appropriate folders in documents. Put this in chrontab and have it run automatically at the times you specify
+
+chmod 777 extension-organizer
+
+#log the date the script last ran along with the ods, odt, and odp files in the Desktop folder, and append those file names to the log
+
+count=$(ls *.{ods,odt,odp} 2>/dev/null | wc -l)
+
+echo $count
+
+if [[ $count != 0 ]];
+	then
+		date >> extension-organizer-log;
+		ls *.{ods,odt,odp} >> extension-organizer-log;
+		#moves libre excel (calc) files into the Excel folder
+
+		find -name '*.ods' -exec mv '{}' ../Documents/Excel \;
+
+		#moves libre word (writer) files into the Word folder
+
+		find -name '*.odt' -exec mv '{}' ../Documents/Word \;
+
+		#moves libre powerpoint (impress) files into the Powerpoint folder
+
+		find -name '*.odp' -exec mv '{}' ../Documents/Powerpoint \;
+
+		echo "Successfully moved files. ";
+else
+	echo "There were no files to move."
+fi
+
+
+
+
+
+
